@@ -1,0 +1,53 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  background-color: black;
+}
+
+.main {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  gap: 25px;
+}
+.main-reset-timer {
+  border: none;
+  padding: 10px 20px;
+  background-color: white;
+  cursor: pointer;
+  transition: background-color 600ms, color 500ms;
+  font-size: 18px;
+  border-radius: 5px;
+}
+.main-reset-timer:hover {
+  background-color: red;
+  color: white;
+}
+.main-counter {
+  display: flex;
+  transition: opacity 1s;
+}
+.main-counter.finished {
+  opacity: 0;
+}
+.main-counter-label {
+  color: white;
+  font-size: 86px;
+  display: flex;
+  align-items: center;
+  font-family: "Squada One", cursive;
+}
+.main-counter-label:not(:last-of-type)::after {
+  content: ":";
+  font-size: 32px;
+  margin: 0 5px;
+}/*# sourceMappingURL=index.css.map */
