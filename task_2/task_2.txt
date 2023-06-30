@@ -1,0 +1,8 @@
+Task no. 2
+
+Create a 160x600 banner. Randomly select three offers from the JSON file. The layout of the banner should be as in the attached example (banner.jpg).
+
+The banner should be in the form of a slider - all the mechanics should be coded without the use of frameworks such as Vue, React. The use of animation libraries is allowed (like GSAP, Anime.js, etc.).
+
+Data should be loaded from a JSON file:  https://rekrutacja.webdeveloper.rtbhouse.net/files/banner.json
+Logo: https://rekrutacja.webdeveloper.rtbhouse.net/files/logo_rtb.png

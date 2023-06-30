@@ -1,0 +1,78 @@
+@font-face {
+  font-family: "Asap";
+  src: url("./static/Asap-Regular.ttf");
+}
+@font-face {
+  font-family: "Asap Bold";
+  src: url("./static/Asap-Bold.ttf");
+}
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+button {
+  border: none;
+  outline: none;
+  background: none;
+}
+
+img {
+  max-width: 100%;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+body .main {
+  width: 160px;
+  height: 600px;
+  display: flex;
+  flex-flow: column;
+}
+body .main .swiper {
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+  border: 1px solid whitesmoke;
+  display: flex;
+  flex-flow: column;
+  padding: 10px 5px 15px 5px;
+  flex: 1;
+}
+body .main .swiper-slide {
+  display: flex;
+  flex-flow: column;
+  min-width: 100%;
+}
+body .main .swiper-slide-container {
+  height: 100%;
+  display: flex;
+  overflow-x: auto;
+}
+body .main .swiper-slide-name {
+  margin: 75px 0;
+  text-align: center;
+  font-family: "Asap";
+}
+body .main .swiper-slide-price {
+  font-weight: bold;
+  text-align: center;
+  margin: 0 20px 0;
+  font-family: "Asap Bold";
+}
+body .main .swiper-slide-button {
+  background-color: orangered;
+  color: white;
+  padding: 10px 30px;
+  display: block;
+  margin: 40px 20px 0;
+  font-family: "Asap";
+}
+body .main-logo-img {
+  border: 1px solid whitesmoke;
+  box-shadow: 0 0 1px gray;
+  border-top: none;
+  padding: 20px 10px;
+}/*# sourceMappingURL=index.css.map */

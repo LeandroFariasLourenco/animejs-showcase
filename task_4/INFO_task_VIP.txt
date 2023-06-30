@@ -1,0 +1,7 @@
+VIP task 4
+Create a 300x600 banner according to the design from the PSD file. (VIP_task)
+The mechanics and the look should be identical to the video example. ( prev_task_VIP ).
+The banner should also correctly display longer names of cities and countries (up to 20 characters), and prices up to 5 digits.
+
+Please code the banner without using frameworks like React, Vue. The use of animation libraries is allowed (like GSAP, Anime.js, etc.).
+All of the dynamic banner content must be loaded from the JSON file: https://rekrutacja.webdeveloper.rtbhouse.net/files/banner_vip.json.

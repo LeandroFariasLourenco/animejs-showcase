@@ -1,0 +1,5 @@
+Task no. 3
+
+Create a counter that counts down the time left until the end of a promo (e.g. from today to the end of the day a week later) in the format "Time left: DD-HH-MM-SS".
+
+Add conditions that will disable the display of days/hours when there are less than 1 left.

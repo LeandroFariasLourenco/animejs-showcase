@@ -1,0 +1,11 @@
+Task no. 1
+
+Create a 300x250 banner. Randomly select four offers from the JSON file. The layout of the banner should be as in the attached example (banner.jpg).
+Add a "jumping frame" animation – a frame around the offer that switches to the next offer every two seconds. From the last offer, the frame should switch back to the first one.
+When hovering the cursor over the banner, the animation should stop, and if it is hovering over one of the offers, the frame should appear on this offer.
+After the cursor leaves the banner, the frame should continue the animation from the last active offer.
+Please code the banner in plain JavaScript, without using frameworks like React, Vue. The use of animation libraries is allowed (like GSAP, Anime.js, etc.).
+
+Images, prices and currency should be loaded from the JSON file:https://rekrutacja.webdeveloper.rtbhouse.net/files/banner.json
+
+Logo: https://rekrutacja.webdeveloper.rtbhouse.net/files/logo_rtb.png
