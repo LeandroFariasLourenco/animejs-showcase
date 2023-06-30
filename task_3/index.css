@@ -47,7 +47,7 @@ body {
   font-family: "Squada One", cursive;
 }
 .main-counter-label:not(:last-of-type)::after {
-  content: ":";
+  content: "-";
   font-size: 32px;
   margin: 0 5px;
 }/*# sourceMappingURL=index.css.map */
