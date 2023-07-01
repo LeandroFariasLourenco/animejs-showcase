@@ -47,7 +47,8 @@ class TimerService {
   }
 
   getTimeLimit() {
-    return new Date(new Date().getTime() + (CONSTANTS.msInDay * CONSTANTS.daysToCount))
+    return new Date(new Date().getTime() + (CONSTANTS.msInDay * CONSTANTS.daysToCount));
+    // return new Date('2023-06-30T23:04:50');
   }
 
   resetTimer() {
@@ -60,13 +61,6 @@ class TimerService {
     const difference = this.limit.getTime() - new Date().getTime();
     if (difference <= CONSTANTS.msInSecond * 2) {
       this.finished = true;
-      this.countdown = {
-        days: this.formatDate(0),
-        hours: this.formatDate(0),
-        minutes: this.formatDate(0),
-        seconds: this.formatDate(1),
-      };
-      return;
     }
     this.countdown = {
       days: this.formatDate(difference /

@@ -6,13 +6,28 @@
     <title>Task 02</title>
     <link rel="stylesheet" href="./index.css" />
     <script src="./index.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
   </head>
   <body>
     <main class="main">
-      <div class="swiper">
-        <button class="swiper-close">X</button>
+      <div class="carousel">
+        <button class="carousel-close">
+          <img src="./static/close.svg" alt="close" title="close" />
+        </button>
 
-        <div class="swiper-slide-container js--slider--container"></div>
+        <div class="carousel-slide-container swiper js--swiper">
+          <div class="swiper-wrapper js--swiper--wrapper"></div>
+        </div>
       </div>
       <div class="main-logo">
         <img

@@ -1,11 +1,6 @@
 @font-face {
-  font-family: 'Asap';
-  src: url('./static/Asap-Regular.ttf');
-}
-
-@font-face {
-  font-family: 'Asap Bold';
-  src: url('./static/Asap-Bold.ttf');
+  font-family: "Asap";
+  src: url("./static/Asap-Regular.ttf");
 }
 
 * {
@@ -35,36 +30,54 @@ body {
     display: flex;
     flex-flow: column;
 
-    .swiper {
+    .carousel {
       box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
       border: 1px solid whitesmoke;
       display: flex;
       flex-flow: column;
-      padding: 10px 5px 15px 5px;
+      padding: 5px 5px 15px 5px;
       flex: 1;
+
+      &-close {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin: 0 3px 8px 0;
+
+        img {
+          width: 11px;
+        }
+      }
 
       &-slide {
         display: flex;
         flex-flow: column;
-        min-width: 100%;
+
+        &-image {
+          &-container {
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+          }
+        }
 
         &-container {
           height: 100%;
-          display: flex;
-          overflow-x: auto;
+          width: 100%;
         }
 
         &-name {
           margin: 75px 0;
           text-align: center;
-          font-family: 'Asap';
+          font-family: "Asap";
         }
 
         &-price {
-          font-weight: bold;
+          font-weight: 700;
           text-align: center;
           margin: 0 20px 0;
-          font-family: 'Asap Bold';
+          flex: 1;
+          font-family: "Open Sans", sans-serif;
         }
 
         &-button {
@@ -73,7 +86,7 @@ body {
           padding: 10px 30px;
           display: block;
           margin: 40px 20px 0;
-          font-family: 'Asap',
+          font-family: "Asap";
         }
       }
     }
