@@ -9,38 +9,48 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&family=Ubuntu+Mono&display=swap" rel="stylesheet">
+  <script src="./static/anime.min.js"></script>
 </head>
 <body>
   <main class="main">
-    <div class="main-container">
-      <img class="main-container-logo" src="./logo.png" alt="logo" />
-    </div>
+    <img class="main-logo js-logo" src="./logo.png" alt="logo" />
+    <div class="main-background js-yellow-background"></div>
 
     <div class="slide">
-      <div class="slide-backgrounds js--slide--backgrounds"></div>
+      <div class="slide-backgrounds js-backgrounds"></div>
 
-      <div class="slide-info">
-        <div class="slide-city-container">
-          <h3 class="slide-city-country js--slide--country"></h3>
-          <h2 class="slide-city-title js--slide--city"></h2>
+      <div class="slide-footer js-footer">
+        <div class="slide-geo-container">
+          <div class="slide-geo-country js-footer-country">
+            <h3 class="slide-geo-country-title js-footer-country-title"></h3>
+          </div>
+          <div class="slide-geo-city js-footer-city">
+            <h2 class="slide-geo-city-title js-footer-city-title"></h2>
+          </div>
         </div>
 
         <div class="slide-price-container">
-          <div class="slide-price-info-container js--price--container">
+          <div class="slide-price-info-container js-footer-price">
             <span class="slide-price-start">from</span>
-            <span class="slide-price-value js--slide--value"></span>
-            <span class="slide-price-symbol js--slide-symbol"></span>
+            <span class="slide-price-value js-footer-value"></span>
+            <span class="slide-price-symbol js-footer-symbol"></span>
           </div>
         </div>
 
         <div class="slide-price-button-container">
-          <button class="slide-price-button">
+          <div class="slide-price-button-bar js-footer-bar"></div>
+          <button class="slide-price-button js-footer-button">
             book now
+
+            <img src="./static/caret-right-solid.svg" alt="caret" title="caret" />
           </button>
         </div>
-        <div class="slide-indicators js--slide--indicators"></div>
+        <div class="slide-indicators js-footer-indicators"></div>
       </div>
     </div>
   </main>
+  IMPLEMENTAR ANIMAÇÃO DE FINALIZAÇÃO
+  <br>
+  ALINHAR MELHOR O TEMPO DE ANIMAÇÃO
 </body>
 </html>

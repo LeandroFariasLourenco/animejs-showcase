@@ -1,163 +1,247 @@
 const CLASSES = {
-  city: 'js--slide--city',
-  country: 'js--slide--country',
-  pricing: 'js--slide--value',
-  priceSymbol: 'js--slide-symbol',
-  priceContainer: 'js--price--container',
   slide: {
-    indicators: 'js--slide--indicators',
-    backgrounds: 'js--slide--backgrounds'
+    backgrounds: 'js-backgrounds',
   },
-  active: {
-    class: 'active',
-    slide: 'js--active--slide',
-    indicator: 'js--active--indicator',
+  footer: {
+    value: 'js-footer-value',
+    symbol: 'js-footer-symbol',
+    price: 'js-footer-price',
+    class: 'js-footer',
+    indicators: 'js-footer-indicators',
+    button: 'js-footer-button',
+    country: { title: 'js-footer-country-title', container: 'js-footer-country' },
+    city: { title: 'js-footer-city-title', container: 'js-footer-city' },
+    bar: 'js-footer-bar',
+  },
+  animations: {
+    yellowBackground: 'js-yellow-background',
+    logo: 'js-logo',
   },
 };
 
-class OfferService {
-  offers = [];
+class BannerService {
+  banners = [];
 
-  async fetchOffers() {
+  async fetchBanners() {
     const response = await fetch('https://rekrutacja.webdeveloper.rtbhouse.net/files/banner_vip.json').then((res) => res.json());
 
-    this.offers = response.offers;
+    this.banners = response.offers;
   }
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
-  let SELECTORS = {};
+document.addEventListener('DOMContentLoaded', () => {
+  const SELECTORS = {
+    slide: {
+      backgrounds: document.querySelector(`.${CLASSES.slide.backgrounds}`),
+    },
+    animations: {
+      yellowBackground: document.querySelector(`.${CLASSES.animations.yellowBackground}`),
+      logo: document.querySelector(`.${CLASSES.animations.logo}`),
+    },
+    footer: {
+      country: {
+        title: document.querySelector(`.${CLASSES.footer.country.title}`),
+        container: document.querySelector(`.${CLASSES.footer.country.container}`)
+      },
+      city: {
+        title: document.querySelector(`.${CLASSES.footer.city.title}`),
+        container: document.querySelector(`.${CLASSES.footer.city.container}`)
+      },
+      value: document.querySelector(`.${CLASSES.footer.value}`),
+      symbol: document.querySelector(`.${CLASSES.footer.symbol}`),
+      price: document.querySelector(`.${CLASSES.footer.price}`),
+      class: document.querySelector(`.${CLASSES.footer.class}`),
+      indicators: document.querySelector(`.${CLASSES.footer.indicators}`),
+      button: document.querySelector(`.${CLASSES.footer.button}`),
+      bar: document.querySelector(`.${CLASSES.footer.bar}`)
+    },
+  };
+  const bannerService = new BannerService();
 
-  const querySelectors = () => {
-    SELECTORS = {
-      city: document.querySelector(`.${CLASSES.city}`),
-      country: document.querySelector(`.${CLASSES.country}`),
-      pricing: document.querySelector(`.${CLASSES.pricing}`),
-      priceSymbol: document.querySelector(`.${CLASSES.priceSymbol}`),
-      priceContainer: document.querySelector(`.${CLASSES.priceContainer}`),
-      slide: {
-        indicators: document.querySelector(`.${CLASSES.slide.indicators}`),
-        backgrounds: document.querySelector(`.${CLASSES.slide.backgrounds}`)
-      },
-      active: {
-        slide: document.querySelector(`.${CLASSES.active.slide}`),
-        indicator: document.querySelector(`.${CLASSES.active.indicator}`),
-      },
-    };
+  let activeBanner;
+  const createSwiper = async () => {
+    await bannerService.fetchBanners();
+
+    bannerService.banners.forEach((offer) => {
+      const image = document.createElement('img');
+      image.src = offer.imgURL;
+      image.title = offer.country;
+      image.alt = offer.country;
+      image.classList.add('slide-background', 'swiper-slide');
+
+      const indicator = document.createElement('div');
+      indicator.classList.add('slide-indicators-block');
+      const indicatorBackground = document.createElement('div');
+      indicatorBackground.classList.add('slide-indicators-block-background');
+      indicator.appendChild(indicatorBackground);
+
+      SELECTORS.footer.indicators.appendChild(indicator);
+      SELECTORS.slide.backgrounds.appendChild(image);
+    });
+
+    setActiveBanner(bannerService.banners[0], 0);
+    setupInitialAnimation();
+  };
+
+  const setActiveBanner = (banner, index) => {
+    activeBanner = index;
+    SELECTORS.footer.city.title.textContent = banner.city;
+    SELECTORS.footer.country.title.textContent = banner.country;
+    SELECTORS.footer.value.textContent = banner.price;
+    SELECTORS.footer.symbol.textContent = banner.currency;
+    const indicator = SELECTORS.footer.indicators.children[activeBanner].firstChild;
+    const background = SELECTORS.slide.backgrounds.children[activeBanner];
+
+    anime({
+      targets: indicator,
+      scaleX: { value: [0, 1], duration: 1000 }
+    });
+
+    if (index !== 0) {
+      anime.timeline({
+        targets: background,
+        easing: 'spring(0, 100, 100, 10)',
+        left: { value: [300, 0], duration: 400 }
+      })
+        .add({
+          targets: getIndicator(activeBanner),
+          translateX: { value: [-50, 0], duration: 350 },
+          scaleX: { value: 1, duration: 0 },
+        })
+        .add({
+          targets: getIndicator(activeBanner - 1),
+          translateX: { value: [0, 50], duration: 350 },
+        }, '-=250')
+    }
   }
 
-  querySelectors();
-  const offerService = new OfferService();
-  await offerService.fetchOffers();
-  let currentSlide = 0;
+  const setupInfoAnimation = () => {
+    const isFirstBanner = activeBanner === 0;
+    const timeline = anime.timeline({ easing: 'easeInOutSine' })
+      .add({
+        targets: SELECTORS.footer.country.container,
+        scaleX: { value: [0, 1], duration: 350 }
+      });
+    if (!isFirstBanner) {
+      initBannerAnimation(activeBanner);
+    }
+    timeline.add({
+      targets: SELECTORS.footer.city.container,
+      scaleX: { value: [0, 1], duration: 350 }
+    })
+      .add({
+        targets: SELECTORS.footer.country.title,
+        translateY: { value: [50, 0], duration: 200 }
+      }, '-=200');
 
-  const createSlider = () => {
-    offerService.offers.forEach((offer, index) => {
-      const backgroundImage = document.createElement('img');
-      backgroundImage.src = offer.imgURL;
-      backgroundImage.alt = offer.city;
-      backgroundImage.title = offer.city;
-      backgroundImage.style.zIndex = index + 1;
-      backgroundImage.classList.add('slide-background');
+    if (isFirstBanner) {
+      timeline.add({
+        targets: SELECTORS.footer.button,
+        translateX: { value: [300, 0], duration: 300 },
+      }, '-=300');
+    }
+    timeline.add({
+      targets: SELECTORS.footer.price,
+      translateY: { value: [200, 0], duration: 350 }
+    }, '-=300');
 
-      SELECTORS.slide.backgrounds.appendChild(backgroundImage);
+    if (isFirstBanner) {
+      timeline.add({
+        targets: SELECTORS.footer.bar,
+        scaleX: { value: [0, 1], duration: 300 }
+      }, '-=400');
+    }
+    timeline.add({
+      targets: SELECTORS.footer.city.title,
+      translateY: { value: [50, 0], duration: 200 }
+    });
+  }
 
-      const slideIndicator = document.createElement('div');
-      slideIndicator.classList.add('slide-indicators-block');
-      SELECTORS.slide.indicators.appendChild(slideIndicator);
+  const getIndicator = (index) => {
+    return SELECTORS.footer.indicators.children[index].children[0];
+  }
 
-      if (index === 0) {
-        backgroundImage.classList.add(CLASSES.active.class, CLASSES.active.slide);
-        bindSlideOfferInfo(offer);
-        slideIndicator.classList.add(CLASSES.active.class, CLASSES.active.indicator);
+  const setupExitAnimation = () => {
+    anime.timeline({ easing: 'easeInOutSine' })
+      .add({
+        targets: SELECTORS.footer.country.title,
+        translateY: { value: [0, -50], duration: 200 }
+      })
+      .add({
+        targets: SELECTORS.footer.city.title,
+        translateY: { value: [0, -50], duration: 200 }
+      })
+      .add({
+        targets: SELECTORS.footer.price,
+        translateY: { value: [0, -50], duration: 200 }
+      }, '-=200')
+      .add({
+        targets: SELECTORS.footer.country.container,
+        scaleX: { value: [1, 0], duration: 350 }
+      }, '-=200')
+      .add({
+        targets: SELECTORS.footer.city.container,
+        scaleX: { value: [1, 0], duration: 350 },
+        complete: () => {
+          setActiveBanner(bannerService.banners[activeBanner + 1], activeBanner + 1);
+          setupInfoAnimation();
+        }
+      }, '-=100')
+  };
+
+  const initBannerAnimation = (bannerIndex) => {
+    const images = SELECTORS.slide.backgrounds.querySelectorAll('img');
+    anime({
+      targets: images[bannerIndex],
+      scale: { value: [1, 1.50], duration: 10000 },
+      easing: 'linear',
+    });
+  }
+
+  const setupInitialAnimation = () => {
+    const timeline = anime.timeline({ easing: 'easeInOutSine' })
+      .add({
+        targets: SELECTORS.animations.yellowBackground,
+        translateY: { value: [600, 0], duration: 500, delay: 300 },
+      })
+      .add({
+        targets: SELECTORS.animations.logo,
+        translateX: { value: [-300, 30], duration: 400 },
+        translateY: { value: 300, duration: 0 },
+      })
+      .add({
+        targets: SELECTORS.animations.logo,
+        duration: 400,
+        delay: 300,
+        translateY: 0,
+      })
+      .add({ targets: SELECTORS.slide.backgrounds, opacity: { value: 1, duration: 100 } })
+      .add({
+        targets: SELECTORS.animations.yellowBackground,
+        translateY: { value: [0, -600], duration: 400 },
+      });
+    initBannerAnimation(activeBanner);
+    timeline.add({
+      targets: SELECTORS.footer.class,
+      translateY: { value: [600, 0], duration: 300 },
+      complete: () => {
+        setupInfoAnimation();
       }
     });
-  };
-
-  const toggleAnimationState = (state) => {
-    if (state === 'remove') {
-      SELECTORS.priceSymbol.style.animationDelay = '1s';
-      SELECTORS.country.style.animationDelay = '1s';
-      SELECTORS.pricing.style.animationDelay = '1s';
-      SELECTORS.city.style.animationDelay = '1s';
-      SELECTORS.priceContainer.style.animationDelay = '1s';
-    }
-
-    SELECTORS.priceSymbol.classList[state]('closing');
-    SELECTORS.country.classList[state]('closing');
-    SELECTORS.pricing.classList[state]('closing');
-    SELECTORS.city.classList[state]('closing');
-    SELECTORS.priceContainer.classList[state]('closing');
   }
 
-  const bindSlideOfferInfo = (offer, restartAnimation = false) => {
-    SELECTORS.city.setAttribute('data-label', offer.city);
-    
-    SELECTORS.country.setAttribute('data-label', offer.country);
-    SELECTORS.pricing.textContent = offer.price;
-    SELECTORS.priceSymbol.textContent = offer.currency;
-    
-    if (restartAnimation) {
-      toggleAnimationState('remove');
-    }
+  createSwiper();
+  const timeout = setTimeout(() => {
+    setupExitAnimation();
+    clearTimeout(timeout);
 
-    const nextSlide = SELECTORS.active.slide?.nextSibling;
-    if (nextSlide) {
-      SELECTORS.active.slide.classList.add('previous');
-      SELECTORS.active.slide.classList.remove(CLASSES.active.slide, CLASSES.active.class);
-      nextSlide.classList.add(CLASSES.active.slide, CLASSES.active.class);
-    }
-
-    const nextIndicator = SELECTORS.active.indicator?.nextSibling;
-    if (nextIndicator) {
-      SELECTORS.active.indicator.classList.remove(CLASSES.active.indicator, CLASSES.active.class);
-      nextIndicator.classList.add(CLASSES.active.indicator, CLASSES.active.class);
-    }
-    querySelectors();
-  }
-
-  const nextSlideImage = () => {
-    currentSlide++;
-    bindSlideOfferInfo(offerService.offers[currentSlide], true);
-  };
-
-  const isLastSlide = () => currentSlide === offerService.offers.length - 1;
-
-  const setupInitialTimer = () => {
-    const initialSlideTimer = {
-      info: 5000,
-      image: 6000,
-    };
-    setTimeout(() => {
-      toggleAnimationState('add');
-    }, initialSlideTimer.info);
-    setTimeout(() => {
-      nextSlideImage();
-    }, initialSlideTimer.image);
-  };
-
-  const setupDefaultTimer = () => {
-    const defaultSlideTimer = {
-      info: 4000,
-      image: 5000,
-    };
-    const closeSlideInfoInterval = setInterval(() => {
-      toggleAnimationState('add');
-      if (isLastSlide()) {
-        clearInterval(closeSlideInfoInterval);
+    const interval = setInterval(() => {
+      if (activeBanner === bannerService.banners.length - 1) {
+        clearInterval(interval);
+        return;
       }
-    }, defaultSlideTimer.info);
 
-    const closeSlideAnimationTimer = slideTimer + 2000;
-    const changeBackgroundInterval = setInterval(() => {
-      nextSlideImage();
-
-      if (isLastSlide()) {
-        clearInterval(changeBackgroundInterval, true);
-      }
-    }, defaultSlideTimer.image);
-  };
-
-  createSlider();
-  setupInitialTimer();
+      setupExitAnimation();
+    }, 4000);
+  }, 6000);
 });
