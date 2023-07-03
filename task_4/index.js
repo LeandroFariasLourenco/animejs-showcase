@@ -1,4 +1,5 @@
 const CLASSES = {
+  main: 'js-main',
   slide: {
     backgrounds: 'js-backgrounds',
   },
@@ -38,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
       yellowBackground: document.querySelector(`.${CLASSES.animations.yellowBackground}`),
       logo: document.querySelector(`.${CLASSES.animations.logo}`),
     },
+    main: document.querySelector(`.${CLASSES.main}`),
     footer: {
       country: {
         title: document.querySelector(`.${CLASSES.footer.country.title}`),
@@ -59,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const bannerService = new BannerService();
 
   let activeBanner;
-  const createSwiper = async () => {
+  const createBanners = async () => {
     await bannerService.fetchBanners();
 
     bannerService.banners.forEach((offer) => {
@@ -230,7 +232,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  createSwiper();
+  const endAnimation = () => {
+    anime({
+      targets: SELECTORS.main,
+      opacity: { value: [1, 0], duration: 1000 },
+    });
+  }
+
+  createBanners();
   const timeout = setTimeout(() => {
     setupExitAnimation();
     clearTimeout(timeout);
@@ -238,10 +247,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const interval = setInterval(() => {
       if (activeBanner === bannerService.banners.length - 1) {
         clearInterval(interval);
+        endAnimation();
         return;
       }
 
       setupExitAnimation();
     }, 4000);
-  }, 6000);
+  }, 5000);
 });
